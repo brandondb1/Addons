@@ -32,7 +32,7 @@ fanSpeedReport(){
    percent=$1;
    level=$2;
    mode=$3;
-   temp=$5;
+   temp=$4;
    case $level in
       1)
         icon=mdi:fan-off;
