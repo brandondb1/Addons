@@ -94,7 +94,7 @@ action() {
   name=${3}
   percentHex=${4}
   cpuTemp=${5}
-  echo "Level $level - Fan $percent% ($name) - temp cpuRawTemp";
+  echo "Level $level - Fan $percent% ($name) - Temp $cpuTemp";
   test ${createEntity} == "true" && fanSpeedReport $percent $level $name
   test ${createEntity} == "true" && tempReport $cpuTemp
   i2cset -y 1 0x01a ${percentHex}
