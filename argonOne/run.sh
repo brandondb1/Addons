@@ -32,7 +32,7 @@ fanSpeedReport(){
    percent=$1;
    level=$2;
    mode=$3;
-   cpuTemp=$4;
+   cpuTemp=$5;
    case $level in
       1)
         icon=mdi:fan-off;
@@ -66,6 +66,7 @@ action() {
   percent=${2}
   name=${3}
   percentHex=${4}
+  cpuTemp=${5}
   echo "Level $level - Fan $percent% ($name)";
   test ${createEntity} == "true" && fanSpeedReport $percent $level $name $cpuTemp
   i2cset -y 1 0x01a ${percentHex}
@@ -142,29 +143,29 @@ until false; do
     #convert fan position to a level and activate fan
     case $curPosition in
       1)
-         action 1 0 "OFF" 0x00
+         action 1 0 "OFF" 0x00 $cpuTemp
          test $? -ne 0 && curPosition=lastPosition;
       ;;
       2)
         if [ $quiet != true ]; then
-          action 2 33 "Low" 0x0a
+          action 2 33 "Low" 0x0a $cpuTemp
           test $? -ne 0 && curPosition=lastPosition;
         else
-          action 2 1 "Quiet Low" 0x01
+          action 2 1 "Quiet Low" 0x01 $cpuTemp
           test $? -ne 0 && curPosition=lastPosition;
         fi
         ;;
       3)
         if [ $quiet != true ]; then
-          action 3 66 "Medium" 0x042
+          action 3 66 "Medium" 0x042 $cpuTemp
           test $? -ne 0 && curPosition=lastPosition;
         else
-          action 3 3 "Quiet Medium" 0x03
+          action 3 3 "Quiet Medium" 0x03 $cpuTemp
           test $? -ne 0 && curPosition=lastPosition;
         fi
         ;;
       *)
-        action 4 100 "High" 0x64
+        action 4 100 "High" 0x64 $cpuTemp
         test $? -ne 0 && curPosition=lastPosition;
         ;;
     esac
