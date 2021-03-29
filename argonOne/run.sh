@@ -32,6 +32,7 @@ fanSpeedReport(){
    percent=$1;
    level=$2;
    mode=$3;
+   temp=$5
    case $level in
       1)
         icon=mdi:fan-off;
@@ -48,7 +49,7 @@ fanSpeedReport(){
       *)
         icon=mdi:fan-off;
     esac
-    reqBody='{"state": "'${percent}'", "attributes": { "unit_of_measurement": "%", "icon": "'${icon}'", "mode": "'${mode}'", "fan level": "'${level}'", "friendly_name": "Argon Fan Speed"}}'
+    reqBody='{"state": "'${percent}'", "attributes": { "unit_of_measurement": "%", "icon": "'${icon}'", "mode": "'${mode}'", "fan level": "'${level}'", "temp": "'${temp}'", "friendly_name": "Argon Fan Speed"}}'
     nc -i 1 hassio 80 1>/dev/null <<<unix2dos<<EOF
 POST /homeassistant/api/states/sensor.argon_one_addon_fan_speed HTTP/1.1
 Authorization: Bearer ${SUPERVISOR_TOKEN}
@@ -65,6 +66,7 @@ action() {
   percent=${2}
   name=${3}
   percentHex=${4}
+  cpuTemp=${5}
   echo "Level $level - Fan $percent% ($name) - temp $cpuTemp";
   test ${createEntity} == "true" && fanSpeedReport $percent $level $name  
   i2cset -y 1 0x01a ${percentHex}
