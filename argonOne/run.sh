@@ -32,7 +32,6 @@ fanSpeedReport(){
    percent=$1;
    level=$2;
    mode=$3;
-   temp=$4;
    case $level in
       1)
         icon=mdi:fan-off;
@@ -49,7 +48,7 @@ fanSpeedReport(){
       *)
         icon=mdi:fan-off;
     esac
-    reqBody='{"state": "'${percent}'", "attributes": { "unit_of_measurement": "%", "icon": "'${icon}'", "mode": "'${mode}'", "fan level": "'${level}'", "temp": "'${temp}'", "friendly_name": "Argon Fan Speed"}}'
+    reqBody='{"state": "'${percent}'", "attributes": { "unit_of_measurement": "%", "icon": "'${icon}'", "mode": "'${mode}'", "fan level": "'${level}'", "friendly_name": "Argon Fan Speed"}}'
     nc -i 1 hassio 80 1>/dev/null <<<unix2dos<<EOF
 POST /homeassistant/api/states/sensor.argon_one_addon_fan_speed HTTP/1.1
 Authorization: Bearer ${SUPERVISOR_TOKEN}
@@ -60,10 +59,7 @@ EOF
 };
 
 tempReport(){
-   percent=$1;
-   level=$2;
-   mode=$3;
-   temp=$4;
+   temp=$1;
    case $level in
       1)
         icon=mdi:fan-off;
@@ -80,7 +76,7 @@ tempReport(){
       *)
         icon=mdi:fan-off;
     esac
-    reqBody='{"state": "'${temp}'", "attributes": { "unit_of_measurement": "C", "icon": "'${icon}'", "mode": "'${mode}'", "fan level": "'${level}'", "temp": "'${temp}'", "friendly_name": "Argon Fan Speed"}}'
+    reqBody='{"state": "'${temp}'", "attributes": { "unit_of_measurement": "°C", "friendly_name": "Argon CPU Temp"}}'
     nc -i 1 hassio 80 1>/dev/null <<<unix2dos<<EOF
 POST /homeassistant/api/states/sensor.argon_one_addon_temp HTTP/1.1
 Authorization: Bearer ${SUPERVISOR_TOKEN}
@@ -99,8 +95,8 @@ action() {
   percentHex=${4}
   cpuTemp=${5}
   echo "Level $level - Fan $percent% ($name) - temp $cpuTemp";
-  test ${createEntity} == "true" && fanSpeedReport $percent $level $name $cpuTemp
-  test ${createEntity} == "true" && tempReport $percent $level $name $cpuTemp
+  test ${createEntity} == "true" && fanSpeedReport $percent $level $name
+  test ${createEntity} == "true" && tempReport $cpuTemp
   i2cset -y 1 0x01a ${percentHex}
   return ${?}
 }
