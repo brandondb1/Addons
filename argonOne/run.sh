@@ -32,7 +32,6 @@ fanSpeedReport(){
    percent=$1;
    level=$2;
    mode=$3;
-   cpuTemp=$5;
    case $level in
       1)
         icon=mdi:fan-off;
@@ -49,7 +48,7 @@ fanSpeedReport(){
       *)
         icon=mdi:fan-off;
     esac
-    reqBody='{"state": "'${percent}'", "attributes": { "unit_of_measurement": "%", "icon": "'${icon}'", "mode": "'${mode}'", "fan level": "'${level}'", "temp": "'${cpuTemp}'", "friendly_name": "Argon Fan Speed"}}'
+    reqBody='{"state": "'${percent}'", "attributes": { "unit_of_measurement": "%", "icon": "'${icon}'", "mode": "'${mode}'", "fan level": "'${level}'", "friendly_name": "Argon Fan Speed"}}'
     nc -i 1 hassio 80 1>/dev/null <<<unix2dos<<EOF
 POST /homeassistant/api/states/sensor.argon_one_addon_fan_speed HTTP/1.1
 Authorization: Bearer ${SUPERVISOR_TOKEN}
@@ -66,9 +65,8 @@ action() {
   percent=${2}
   name=${3}
   percentHex=${4}
-  cpuTemp=${5}
   echo "Level $level - Fan $percent% ($name)";
-  test ${createEntity} == "true" && fanSpeedReport $percent $level $name $cpuTemp
+  test ${createEntity} == "true" && fanSpeedReport $percent $level $name  
   i2cset -y 1 0x01a ${percentHex}
   return ${?}
 }
@@ -143,29 +141,29 @@ until false; do
     #convert fan position to a level and activate fan
     case $curPosition in
       1)
-         action 1 0 "OFF" 0x00 $cpuTemp
+         action 1 0 "OFF" 0x00
          test $? -ne 0 && curPosition=lastPosition;
       ;;
       2)
         if [ $quiet != true ]; then
-          action 2 33 "Low" 0x0a $cpuTemp
+          action 2 33 "Low" 0x0a
           test $? -ne 0 && curPosition=lastPosition;
         else
-          action 2 1 "Quiet Low" 0x01 $cpuTemp
+          action 2 1 "Quiet Low" 0x01
           test $? -ne 0 && curPosition=lastPosition;
         fi
         ;;
       3)
         if [ $quiet != true ]; then
-          action 3 66 "Medium" 0x042 $cpuTemp
+          action 3 66 "Medium" 0x042
           test $? -ne 0 && curPosition=lastPosition;
         else
-          action 3 3 "Quiet Medium" 0x03 $cpuTemp
+          action 3 3 "Quiet Medium" 0x03
           test $? -ne 0 && curPosition=lastPosition;
         fi
         ;;
       *)
-        action 4 100 "High" 0x64 $cpuTemp
+        action 4 100 "High" 0x64
         test $? -ne 0 && curPosition=lastPosition;
         ;;
     esac
