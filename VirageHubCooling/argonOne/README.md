@@ -1,4 +1,4 @@
-![image](https://raw.githubusercontent.com/brandondb1/addons/VirageHubCooling/gitResources/activecooling.jpg)
+![image](https://raw.githubusercontent.com/brandondb1/Addons/main/VirageHubCooling/gitResources/activecooling.jpg)
 
 This is an addon for Argon One in Home Assistantant. It's essentially a script that runs in a docker container. It enables and automates the Argon One Active Cooling System with your specifications.<br>
 
