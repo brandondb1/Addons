@@ -1,0 +1,18 @@
+{
+  "name": "Avahi Reflector MQTT",
+  "version": "1.0",
+  "slug": "avahi_reflector_mqtt",
+  "description": "avahi-daemon MQTT Service Broadcast",
+  "url": "https://github.com/brandondb1/home-assistant-addons/blob/master/avahi-reflector",
+  "arch": ["armhf", "armv7", "aarch64", "amd64", "i386"],
+  "image": "brandondb/home-assistant-addon-{arch}-avahi-reflector",
+  "startup": "application",
+  "boot": "auto",
+  "options": {
+    "allow_interfaces": "eth0"
+  },
+  "schema": {
+    "allow_interfaces": "str"
+  },
+  "host_network": true
+}
