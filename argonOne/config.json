@@ -1,8 +1,8 @@
 {
-   "name": "ArgonOne Active Cooling",
+   "name": "VirageHub Active Cooling",
    "version": "0.3",
    "slug": "argon_one_temp",
-   "description": "Actively keeping your Argon One cool.",
+   "description": "Actively cool your VirageHub.",
    "arch": ["armhf", "armv7", "aarch64"],
    "startup": "application",
    "full_access": "no",
@@ -13,7 +13,7 @@
    "hassio_api": true,
    "devices": ["/dev/i2c-1"],
    "host_network": false,
-   "url":"https://community.home-assistant.io/t/argon-one-active-cooling-addon/262598/",
+   "url":"https://github.com/brandondb1/HassOSArgonOneAddon",
    "map": ["config", "ssl", "addons", "backup", "share", "media"],
    "options": {
       "CorF": "C",
@@ -21,7 +21,7 @@
       "MediumRange": 60,
       "HighRange": 70,
       "QuietProfile": false,
-      "Create a Fan Speed entity in Home Assistant": true
+      "Create a Fan Speed and Temperature entity": true
    },
    "schema": {
       "CorF": "str",
@@ -29,6 +29,6 @@
       "MediumRange": "int(0,255)",
       "HighRange": "int(0,255)",
       "QuietProfile": "bool",
-      "Create a Fan Speed entity in Home Assistant": "bool"
+      "Create a Fan Speed and Temperature entity": "bool"
    }
 }
