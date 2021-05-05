@@ -38,6 +38,5 @@
     "certfile": "str",
     "keyfile": "str",
     "require_certificate": "bool"
-  },
-  "image": "homeassistant/{arch}-addon-mosquitto"
+  }
 }
