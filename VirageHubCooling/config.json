@@ -1,7 +1,7 @@
 {
    "name": "VirageHub Active Cooling",
    "version": "0.3",
-   "slug": "argon_one_temp",
+   "slug": "virage_hub_temp",
    "description": "Actively cool your VirageHub.",
    "arch": ["armhf", "armv7", "aarch64"],
    "startup": "application",
@@ -13,7 +13,7 @@
    "hassio_api": true,
    "devices": ["/dev/i2c-1"],
    "host_network": false,
-   "url":"https://github.com/brandondb1/VirageHubCooling",
+   "url":"https://github.com/brandondb1/Addons/tree/main/VirageHubCooling",
    "map": ["config", "ssl", "addons", "backup", "share", "media"],
    "options": {
       "CorF": "C",
