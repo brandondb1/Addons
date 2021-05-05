@@ -1,5 +1,4 @@
-ARG BUILD_FROM
-FROM $BUILD_FROM
+
 
 # Install mosquitto + auth plugin
 WORKDIR /usr/src
