@@ -1,6 +1,6 @@
 # Configuration
 
-![image](https://raw.githubusercontent.com/brandondb1/addons/VirageHubCooling/gitResources/Configuration.png)
+![image](https://raw.githubusercontent.com/brandondb1/Addons/tree/main/VirageHubCooling/gitResources/Configuration.png)
 
 ## Celcius or Farenheit
 
@@ -10,7 +10,7 @@ Choose Celcius or Farenheit.
 
 ## Temperature Ranges
 
-![image](https://raw.githubusercontent.com/brandondb1/addons/VirageHubCooling/gitResources/FanRangeExplaination.png)
+![image](https://raw.githubusercontent.com/brandondb1/Addons/tree/main/VirageHubCooling/gitResources/FanRangeExplaination.png)
 
 Set your fan ranges appropriately.
 
