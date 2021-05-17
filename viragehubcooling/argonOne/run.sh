@@ -65,7 +65,6 @@ EOF
 cpuTempReport(){
    cpuTemp=$1;
    icon=mdi:thermometer;
-    esac
     reqBody='{"state": "'"${cpuTemp}"'", "attributes": { "unit_of_measurement": "C", "icon": "'"${icon}"'", "friendly_name": "CPU Temperature"}}'
     nc -i 1 hassio 80 1>/dev/null <<<unix2dos<<EOF
 POST /homeassistant/api/states/sensor.argon_one_addon_fan_speed HTTP/1.1
