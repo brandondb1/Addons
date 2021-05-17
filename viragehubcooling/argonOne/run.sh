@@ -64,8 +64,9 @@ EOF
 
 cpuTempReport(){
    cpuTemp=$1;
+   unit=$2;
    icon=mdi:thermometer;
-    reqBody='{"state": "'"${cpuTemp}"'", "attributes": { "unit_of_measurement": "C", "icon": "'"${icon}"'", "friendly_name": "CPU Temperature"}}'
+    reqBody='{"state": "'"${cpuTemp}"'", "attributes": { "unit_of_measurement": "'"${unit}"'", "icon": "'"${icon}"'", "friendly_name": "CPU Temperature"}}'
     nc -i 1 hassio 80 1>/dev/null <<<unix2dos<<EOF
 POST /homeassistant/api/states/sensor.viragehub_cpu_temp HTTP/1.1
 Authorization: Bearer ${SUPERVISOR_TOKEN}
@@ -100,7 +101,7 @@ t1=$(mkfloat $(jq -r '.LowRange' <options.json))
 t2=$(mkfloat $(jq -r '.MediumRange'<options.json))
 t3=$(mkfloat $(jq -r '.HighRange'<options.json))
 quiet=$(jq -r '.QuietProfile'<options.json)
-createEntity=$(jq -r '."Create a Fan Speed entity in Home Assistant"' <options.json)
+createEntity=$(jq -r '."Create Fan Speed & Temp entities in Home Assistant"' <options.json)
 
 
 ###
