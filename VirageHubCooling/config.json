@@ -1,6 +1,6 @@
 {
    "name": "VirageHub Active Cooling",
-   "version": "0.31",
+   "version": "0.4",
    "slug": "virage_hub_temp",
    "description": "Actively cool your VirageHub.",
    "arch": ["armhf", "armv7", "aarch64"],
@@ -16,7 +16,7 @@
    "url":"https://github.com/brandondb1/Addons/tree/main/VirageHubCooling",
    "map": ["config", "ssl", "addons", "backup", "share", "media"],
    "options": {
-      "CorF": "C",
+      "C or F": "C",
       "LowRange": 40,
       "MediumRange": 60,
       "HighRange": 70,
@@ -24,7 +24,7 @@
       "Create a Fan Speed and Temperature entity": true
    },
    "schema": {
-      "CorF": "str",
+      "C or F": "str",
       "LowRange": "int(0,255)",
       "MediumRange": "int(0,255)",
       "HighRange": "int(0,255)",
