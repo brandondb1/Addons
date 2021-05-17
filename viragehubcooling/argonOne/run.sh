@@ -54,7 +54,7 @@ fanSpeedReport(){
     esac
     reqBody='{"state": "'"${percent}"'", "attributes": { "unit_of_measurement": "%", "icon": "'"${icon}"'", "mode": "'"${mode}"'", "fan level": "'"${level}"'", "friendly_name": "Argon Fan Speed"}}'
     nc -i 1 hassio 80 1>/dev/null <<<unix2dos<<EOF
-POST /homeassistant/api/states/sensor.argon_one_addon_fan_speed HTTP/1.1
+POST /homeassistant/api/states/sensor.viragehub_fan_speed HTTP/1.1
 Authorization: Bearer ${SUPERVISOR_TOKEN}
 Content-Length: $( echo -ne "${reqBody}" | wc -c ) 
 
@@ -67,7 +67,7 @@ cpuTempReport(){
    icon=mdi:thermometer;
     reqBody='{"state": "'"${cpuTemp}"'", "attributes": { "unit_of_measurement": "C", "icon": "'"${icon}"'", "friendly_name": "CPU Temperature"}}'
     nc -i 1 hassio 80 1>/dev/null <<<unix2dos<<EOF
-POST /homeassistant/api/states/sensor.argon_one_addon_fan_speed HTTP/1.1
+POST /homeassistant/api/states/sensor.viragehub_cpu_temp HTTP/1.1
 Authorization: Bearer ${SUPERVISOR_TOKEN}
 Content-Length: $( echo -ne "${reqBody}" | wc -c ) 
 
