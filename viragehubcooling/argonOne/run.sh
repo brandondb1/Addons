@@ -62,6 +62,20 @@ ${reqBody}
 EOF
 };
 
+cpuTempReport(){
+   cpuTemp=$1;
+   icon=mdi:thermometer;
+    esac
+    reqBody='{"state": "'"${cpuTemp}"'", "attributes": { "unit_of_measurement": "C", "icon": "'"${icon}"'", "friendly_name": "CPU Temperature"}}'
+    nc -i 1 hassio 80 1>/dev/null <<<unix2dos<<EOF
+POST /homeassistant/api/states/sensor.argon_one_addon_fan_speed HTTP/1.1
+Authorization: Bearer ${SUPERVISOR_TOKEN}
+Content-Length: $( echo -ne "${reqBody}" | wc -c ) 
+
+${reqBody}
+EOF
+};
+
 
 
 action() {
@@ -70,7 +84,8 @@ action() {
   name=${3}
   percentHex=${4}
   echo "Level $level - Fan $percent% ($name) - $cpuTemp";
-  test "${createEntity}" == "true" && fanSpeedReport "$percent" "$level" "$name"  
+  test "${createEntity}" == "true" && fanSpeedReport "$percent" "$level" "$name"
+  test "${createEntity}" == "true" && cpuTempReport "$cpuTemp"
   i2cset -y 1 0x01a "${percentHex}"
   return ${?}
 }
