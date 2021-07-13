@@ -8,11 +8,11 @@
   "startup": "application",
   "boot": "auto",
   "options": {
-    "allow_interfaces": "eth0"
+    "allow_interfaces": "eth0",
     "host-name": "homeassistant"
   },
   "schema": {
-    "allow_interfaces": "str"
+    "allow_interfaces": "str",
     "host-name": "str"
   },
   "host_network": true
