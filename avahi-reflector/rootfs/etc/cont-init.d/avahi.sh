@@ -1,7 +1,7 @@
 #!/usr/bin/with-contenv bashio
 # ==============================================================================
-# Home Assistant Community Add-on: chrony
-# Configures chrony
+# Home Assistant Add-on: Avahi Daemon
+# Configures Avahi-Daemon
 # ==============================================================================
 readonly AVAHI_CONF='/etc/avahi/avahi-daemon.conf'
 declare HOSTNAME
