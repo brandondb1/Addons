@@ -9,7 +9,7 @@
   "boot": "auto",
   "options": {
     "allow_interfaces": "eth0",
-    "host_name": "homeassistant"
+    "host_name": "hassio"
   },
   "schema": {
     "allow_interfaces": "str",
