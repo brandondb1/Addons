@@ -5,6 +5,6 @@ ENV LANG C.UTF-8
 
 COPY rootfs /
 
-RUN apk add --no-cache avahi jq && chmod +x /run.sh
+RUN apk add --no-cache avahi jq && chmod +x
 
-CMD ["/run.sh"]
+
