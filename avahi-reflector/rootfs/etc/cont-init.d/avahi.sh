@@ -19,8 +19,8 @@ fi
 #INTERFACE=$(bashio::config 'allow_interfaces')
 #if bashio::var.is_empty "${INTERFACE}";
 if bashio::config.is_empty 'host_name'; then
-    bashio::log.warning "Can't read interface, using default $(bashio::network.name)."
-		INTERFACE=$(bashio::network.name)
+    bashio::log.warning "Can't read interface, using default."
+		INTERFACE="eth0"
 else
     INTERFACE=$(bashio::config 'allow_interfaces')
 fi

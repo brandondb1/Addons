@@ -1,6 +1,6 @@
 {
   "name": "Avahi Reflector MQTT",
-  "version": "1.18",
+  "version": "1.19",
   "slug": "avahi_reflector_mqtt",
   "description": "avahi-daemon MQTT Service Broadcast",
   "url": "https://github.com/brandondb1/Addons/tree/main/avahi-reflector",
