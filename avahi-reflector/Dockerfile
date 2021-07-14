@@ -3,9 +3,7 @@ FROM $BUILD_FROM
 
 ENV LANG C.UTF-8
 
-COPY avahi-daemon.conf /etc/avahi/avahi-daemon.conf
-COPY mqtt.service /etc/avahi/services/mqtt.service
-COPY run.sh /run.sh
+COPY rootfs /
 
 RUN apk add --no-cache avahi jq && chmod +x /run.sh
 

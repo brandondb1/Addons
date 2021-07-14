@@ -26,4 +26,4 @@ then
     "$AVAHI_CONFIG_PATH"
 fi
 
-
+exec avahi-daemon
