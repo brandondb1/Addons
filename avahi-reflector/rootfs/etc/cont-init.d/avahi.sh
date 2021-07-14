@@ -7,19 +7,22 @@ readonly AVAHI_CONF='/etc/avahi/avahi-daemon.conf'
 declare HOSTNAME
 declare INTERFACE
 
-HOSTNAME=$(bashio::config 'host_name')
-if bashio::var.is_empty "${HOSTNAME}";
-then
+#HOSTNAME=$(bashio::config 'host_name')
+#if bashio::var.is_empty "${HOSTNAME}";
+if bashio::config.is_empty 'host_name'; then
     bashio::log.warning "Can't read hostname, using default."
 		HOSTNAME="hassio"
+else
+    HOSTNAME=$(bashio::config 'host_name')
 fi
 
-INTERFACE=$(bashio::config 'allow_interfaces')
-if bashio::var.is_empty "${INTERFACE}";
-
-then
+#INTERFACE=$(bashio::config 'allow_interfaces')
+#if bashio::var.is_empty "${INTERFACE}";
+if bashio::config.is_empty 'host_name'; then
     bashio::log.warning "Can't read interface, using default $(bashio::network.name)."
 		INTERFACE=$(bashio::network.name)
+else
+    INTERFACE=$(bashio::config 'allow_interfaces')
 fi
 
 
