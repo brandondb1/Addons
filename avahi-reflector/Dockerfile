@@ -5,4 +5,4 @@ ENV LANG C.UTF-8
 
 COPY rootfs /
 
-RUN apk add --no-cache avahi jq && chmod +x /etc/cont-init.d/run.sh
+RUN apk add --no-cache avahi
