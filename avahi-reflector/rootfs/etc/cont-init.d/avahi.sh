@@ -8,15 +8,18 @@ declare HOSTNAME
 declare INTERFACE
 
 HOSTNAME=$(bashio::config 'host_name')
-if bashio::var.is_empty "${HOSTNAME}"; then
+if bashio::var.is_empty "${HOSTNAME}";
+then
     bashio::log.warning "Can't read hostname, using default."
-    hostname="hassio"
+		HOSTNAME="hassio"
 fi
 
 INTERFACE=$(bashio::config 'allow_interfaces')
-if bashio::var.is_empty "${INTERFACE}"; then
-    bashio::log.warning "Can't read interface, using default."
-    INTERFACE=$(bashio::network.name)
+if bashio::var.is_empty "${INTERFACE}";
+
+then
+    bashio::log.warning "Can't read interface, using default $(bashio::network.name)."
+		INTERFACE=$(bashio::network.name)
 fi
 
 
