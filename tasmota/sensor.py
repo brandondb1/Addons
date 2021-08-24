@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 from datetime import datetime
+import logging
 from typing import Any
 
 from hatasmota import const as hc, sensor as tasmota_sensor, status_sensor
@@ -9,11 +10,7 @@ from hatasmota.entity import TasmotaEntity as HATasmotaEntity
 from hatasmota.models import DiscoveryHashType
 
 from homeassistant.components import sensor
-from homeassistant.components.sensor import (
-    STATE_CLASS_MEASUREMENT,
-    STATE_CLASS_TOTAL_INCREASING,
-    SensorEntity,
-)
+from homeassistant.components.sensor import STATE_CLASS_MEASUREMENT, SensorEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.const import (
     CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
@@ -52,10 +49,13 @@ from homeassistant.const import (
 from homeassistant.core import HomeAssistant, callback
 from homeassistant.helpers.dispatcher import async_dispatcher_connect
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
+from homeassistant.util import dt as dt_util
 
 from .const import DATA_REMOVE_DISCOVER_COMPONENT
 from .discovery import TASMOTA_DISCOVERY_ENTITY_NEW
 from .mixins import TasmotaAvailability, TasmotaDiscoveryUpdate
+
+_LOGGER = logging.getLogger(__name__)
 
 DEVICE_CLASS = "device_class"
 STATE_CLASS = "state_class"
@@ -121,7 +121,7 @@ SENSOR_DEVICE_CLASS_ICON_MAP = {
     hc.SENSOR_TODAY: {DEVICE_CLASS: DEVICE_CLASS_ENERGY},
     hc.SENSOR_TOTAL: {
         DEVICE_CLASS: DEVICE_CLASS_ENERGY,
-        STATE_CLASS: STATE_CLASS_TOTAL_INCREASING,
+        STATE_CLASS: STATE_CLASS_MEASUREMENT,
     },
     hc.SENSOR_TOTAL_START_TIME: {ICON: "mdi:progress-clock"},
     hc.SENSOR_TVOC: {ICON: "mdi:air-filter"},
@@ -188,6 +188,7 @@ async def async_setup_entry(
 class TasmotaSensor(TasmotaAvailability, TasmotaDiscoveryUpdate, SensorEntity):
     """Representation of a Tasmota sensor."""
 
+    _attr_last_reset = None
     _tasmota_entity: tasmota_sensor.TasmotaSensor
 
     def __init__(self, **kwds: Any) -> None:
@@ -211,6 +212,17 @@ class TasmotaSensor(TasmotaAvailability, TasmotaDiscoveryUpdate, SensorEntity):
             self._state_timestamp = state
         else:
             self._state = state
+        if "last_reset" in kwargs:
+            try:
+                last_reset_dt = dt_util.parse_datetime(kwargs["last_reset"])
+                last_reset = dt_util.as_utc(last_reset_dt) if last_reset_dt else None
+                if last_reset is None:
+                    raise ValueError
+                self._attr_last_reset = last_reset
+            except ValueError:
+                _LOGGER.warning(
+                    "Invalid last_reset timestamp '%s'", kwargs["last_reset"]
+                )
         self.async_write_ha_state()
 
     @property
@@ -246,7 +258,7 @@ class TasmotaSensor(TasmotaAvailability, TasmotaDiscoveryUpdate, SensorEntity):
         return class_or_icon.get(ICON)
 
     @property
-    def native_value(self) -> str | None:
+    def state(self) -> str | None:
         """Return the state of the entity."""
         if self._state_timestamp and self.device_class == DEVICE_CLASS_TIMESTAMP:
             return self._state_timestamp.isoformat()
@@ -258,6 +270,6 @@ class TasmotaSensor(TasmotaAvailability, TasmotaDiscoveryUpdate, SensorEntity):
         return True
 
     @property
-    def native_unit_of_measurement(self) -> str | None:
+    def unit_of_measurement(self) -> str | None:
         """Return the unit this state is expressed in."""
         return SENSOR_UNIT_MAP.get(self._tasmota_entity.unit, self._tasmota_entity.unit)

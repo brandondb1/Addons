@@ -1,12 +1,12 @@
 """Config flow for Tasmota."""
 from __future__ import annotations
 
-from typing import Any
+from typing import Any, cast
 
 import voluptuous as vol
 
 from homeassistant import config_entries
-from homeassistant.components.mqtt import valid_subscribe_topic
+from homeassistant.components.mqtt import ReceiveMessage, valid_subscribe_topic
 from homeassistant.data_entry_flow import FlowResult
 from homeassistant.helpers.typing import DiscoveryInfoType
 
@@ -29,17 +29,16 @@ class FlowHandler(config_entries.ConfigFlow, domain=DOMAIN):
 
         await self.async_set_unique_id(DOMAIN)
 
-        # Validate the message, abort if it fails
-        if not discovery_info["topic"].endswith("/config"):
-            # Not a Tasmota discovery message
-            return self.async_abort(reason="invalid_discovery_info")
-        if not discovery_info["payload"]:
-            # Empty payload, the Tasmota is not configured for native discovery
+        # Validate the topic, will throw if it fails
+        prefix = cast(ReceiveMessage, discovery_info).subscribed_topic
+        if prefix.endswith("/#"):
+            prefix = prefix[:-2]
+        try:
+            valid_subscribe_topic(f"{prefix}/#")
+        except vol.Invalid:
             return self.async_abort(reason="invalid_discovery_info")
 
-        # "tasmota/discovery/#" is hardcoded in Tasmota's manifest
-        assert discovery_info["subscribed_topic"] == "tasmota/discovery/#"
-        self._prefix = "tasmota/discovery"
+        self._prefix = prefix
 
         return await self.async_step_confirm()
 
